@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surpresa</title>
+<style>
+  body, html { margin:0; padding:0; font-family:sans-serif; overflow-x:hidden; }
+
+  /* Parte 1 */
+  #parte1 {
+    height:100vh;
+    background: linear-gradient(to bottom, #ffc0cb, #ffb6c1);
+    display:flex; justify-content:center; align-items:center; flex-direction:column;
+    position:relative;
+  }
+
+  .button-surpresa {
+    padding:20px 40px; font-size:24px; background-color:#ff69b4; border:none; border-radius:10px; color:white; cursor:pointer; z-index:10;
+  }
+
+  .coracao {
+    position:absolute; font-size:24px; color:#ff1493; animation: subir 5s linear infinite; opacity:0.8;
+  }
+
+  @keyframes subir {
+    0% { transform: translateY(100vh) scale(0.5); opacity:0.5; }
+    50% { opacity:1; }
+    100% { transform: translateY(-50vh) scale(1); opacity:0; }
+  }
+
+  /* Parte 2 */
+  #parte2 { display:none; height:100vh; background-color:#ffc0cb; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center; }
+  #parte2 h2 { margin-bottom:20px; font-size:28px; color:white; }
+  #imagens { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  #imagens img { width:150px; height:150px; object-fit:cover; border-radius:10px; }
+  #mensagem-final { margin-top:20px; font-size:24px; color:white; display:none; }
+
+  /* Upload input styling */
+  #uploadFotos { margin-top:20px; padding:10px; font-size:16px; border-radius:5px; border:none; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<!-- Parte 1 -->
+<div id="parte1">
+  <button class="button-surpresa" onclick="mostrarParte2()">Surpresa</button>
+  <div class="coracao" style="left:10%;">❤️</div>
+  <div class="coracao" style="left:30%;">💖</div>
+  <div class="coracao" style="left:50%;">❤️</div>
+  <div class="coracao" style="left:70%;">💖</div>
+  <div class="coracao" style="left:90%;">❤️</div>
+</div>
+
+<!-- Parte 2 -->
+<div id="parte2">
+  <h2>Obrigado por tudo meu amor, esses foram os momentos mais especiais para mim</h2>
+  <input type="file" id="uploadFotos" multiple accept=".jfif,.jpg,.jpeg,.png">
+  <div id="imagens"></div>
+  <div id="mensagem-final">Eu te amo muito minha princesa ❤️</div>
+</div>
+
+<script>
+function mostrarParte2(){
+  document.getElementById('parte1').style.display='none';
+  document.getElementById('parte2').style.display='flex';
+
+  const input = document.getElementById('uploadFotos');
+  const container = document.getElementById('imagens');
+  const mensagemFinal = document.getElementById('mensagem-final');
+
+  input.addEventListener('change', function(e){
+    const arquivos = e.target.files;
+    container.innerHTML = '';
+    let carregadas = 0;
+
+    Array.from(arquivos).forEach(file => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      container.appendChild(img);
+
+      img.onload = () => {
+        carregadas++;
+        if(carregadas === arquivos.length){
+          mensagemFinal.style.display = 'block';
+        }
+      }
+    });
+  });
+}
+</script>
+
+</body>
+</html>
